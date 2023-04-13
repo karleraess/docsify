@@ -13,12 +13,32 @@
   <div id="app"></div>
   <script>
     window.$docsify = {
-      name: '',
-      repo: ''
+      name: '院子里的秋千',
+      repo: 'https://github.com/karleraess/docsify',
+      auto2top: true,
+      coverpage: true,    // 封面
+      loadSidebar: true,  // 侧边栏
+      search: {   // 搜索
+        paths: 'auto',
+        placeholder: '🔍 Type to search ',
+        noData: '😞 No Results! ',
+        depth: 6
+      },
+      plantuml: { // plantuml使用默认皮肤
+        skin: 'default',
+      },
+
     }
   </script>
   <!-- Docsify v4 -->
 <!--  <script src="/cdn.jsdelivr.net/npm/docsify@4"></script>-->
+<!--  <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.js"></script>-->
+<!--  <script src="//unpkg.com/docsify-mermaid@latest/dist/docsify-mermaid.js"></script>-->
+<!--  <script src="//unpkg.com/docsify-plantuml/dist/docsify-plantuml.min.js"></script>-->
+
   <script src="/docsify/docsify@4"></script>
+  <script src="/docsify/search.js"></script>
+  <script src="/docsify/docsify-mermaid.js"></script>
+  <script src="/docsify/docsify-plantuml.min.js"></script>
 </body>
 </html>
