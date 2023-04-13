@@ -8,6 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
 <!--  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">-->
   <link rel="stylesheet" href="./vue.css">
+  <link rel="stylesheet" href="./mermaid.min.css">
 </head>
 <body>
   <div id="app"></div>
@@ -28,6 +29,19 @@
         skin: 'default',
       },
 
+      markdown: {
+        renderer: {
+          code: function(code, lang) {
+            if (lang === "mermaid") {
+              return (
+                '<div class="mermaid">' + mermaid.render('mermaid-svg-' + num++, code) + "</div>"
+              );
+            }
+            return this.origin.code.apply(this, arguments);
+          }
+        }
+      },
+
     }
   </script>
   <!-- Docsify v4 -->
@@ -36,9 +50,9 @@
 <!--  <script src="//unpkg.com/docsify-mermaid@latest/dist/docsify-mermaid.js"></script>-->
 <!--  <script src="//unpkg.com/docsify-plantuml/dist/docsify-plantuml.min.js"></script>-->
 
-  <script src="./docsify@4"></script>
+  <script src="./docsify.min.js"></script>
   <script src="./search.js"></script>
-  <script src="./docsify-mermaid.js"></script>
+  <script src="./mermaid.min.js"></script>
   <script src="./docsify-plantuml.min.js"></script>
 </body>
 </html>
