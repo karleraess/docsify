@@ -11,14 +11,23 @@
 </head>
 <body>
   <div id="app"></div>
-  <script type="text/javascript" src="./body.js"></script>
   <script>
     window.$docsify = {
       name: '院子里的秋千',
       repo: 'https://github.com/karleraess/docsify',
       auto2top: true,
-      coverpage: true,    // 封面
-      loadSidebar: true,  // 侧边栏
+      // 侧边栏支持，默认加载的是项目根目录下的_sidebar.md文件
+      loadSidebar: true,
+      // 导航栏支持，默认加载的是项目根目录下的_navbar.md文件
+      loadNavbar: true,
+      // 封面支持，默认加载的是项目根目录下的_coverpage.md文件
+      coverpage: false,
+      // 最大支持渲染的标题层级
+      maxLevel: 6,
+      // 自定义侧边栏后默认不会再生成目录，设置生成目录的最大层级（建议配置为2-4）
+      subMaxLevel: 4,
+      // 小屏设备下合并导航栏到侧边栏
+      mergeNavbar: true,
       search: {   // 搜索
         paths: 'auto',
         placeholder: '🔍 找找散落的玩具 ',
@@ -44,11 +53,11 @@
 
     }
   </script>
-  <!-- Docsify v4 -->
-<!--  <script src="/cdn.jsdelivr.net/npm/docsify@4"></script>-->
-<!--  <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.js"></script>-->
-<!--  <script src="//unpkg.com/docsify-mermaid@latest/dist/docsify-mermaid.js"></script>-->
-<!--  <script src="//unpkg.com/docsify-plantuml/dist/docsify-plantuml.min.js"></script>-->
+<!--  <script type="text/javascript" src="./body.js"></script>-->
+  <script src="./src/docsify.min.js"></script>
+  <script src="./src/search.js"></script>
+  <script src="./src/mermaid.min.js"></script>
+  <script src="./src/docsify-plantuml.min.js"></script>
 
 </body>
 </html>
