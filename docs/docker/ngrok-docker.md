@@ -75,8 +75,8 @@ RUN apk add --no-cache git make openssl tzdata && \
 	git clone -b v1 https://gitee.com/thorbo/yaml /usr/local/ngrok/src/gopkg.in/yaml.v1 && \
 	git clone -b v1 https://gitee.com/thorbo/yaml /usr/local/go/src/gopkg.in/yaml.v1
 ```
-> 已制作好的
-> registry.cn-hangzhou.aliyuncs.com/karleraess/ngrok-base:latest
+> 已制作好的镜像
+>> registry.cn-hangzhou.aliyuncs.com/karleraess/ngrok-base:latest
 
 ### 镜像编译命令
 ```shell
@@ -129,8 +129,8 @@ GOOS=darwin GOARCH=amd64 make release-client
 GOOS=darwin GOARCH=386 make release-client
 GOOS=darwin GOARCH=amd64 make release-client
 ```
-> 已制作好的centos 7.9.2009，域名ngrok.karleraess.top
-> registry.cn-hangzhou.aliyuncs.com/karleraess/ngrok:ngrok.karleraess.top
+> 已制作好的，域名ngrok.karleraess.top
+>> registry.cn-hangzhou.aliyuncs.com/karleraess/ngrok:ngrok.karleraess.top
 
 ### Docker 启动命令
 ```shell
