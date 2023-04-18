@@ -327,3 +327,9 @@ metadata:
 
 
 ```
+
+## zk 相关命令
+### 查看zk的leader/follower 状态
+```shell
+/opt/bitnami/zookeeper/bin/zkServer.sh status
+```

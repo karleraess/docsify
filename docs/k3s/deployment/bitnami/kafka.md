@@ -374,3 +374,25 @@ metadata:
 
 
 ```
+
+
+## kafka 相关命令
+### 查看
+```shell
+./opt/kafka/bin/kafka-topics.sh --zookeeper zk-1.zk-hs.default.svc.cluster.local:2181 --describe --topic csm-screen-biz-message
+```
+
+### 创建topic
+```shell
+./opt/kafka/bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic mytest
+```
+
+### 下面是通过命令指定分区数和副本数
+```shell
+./opt/kafka/bin/kafka-topics.sh  --zookeeper zok-0.zk-hs.default.svc.cluster.local:2181 --create   --topic csm-screen-biz-message --partitions 2  --replication-factor 1
+PS: 创建topic时，分区数为num.partitions（默认1），副本因子为default.replication.factor
+```
+### 更新topic
+```shell
+./opt/kafka/bin/kafka-topics.sh --alter --zookeeper zk-2.zk-hs.default.svc.cluster.local:2181 --topic csm-screen-biz-message --partitions 2
+```
