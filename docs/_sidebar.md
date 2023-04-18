@@ -4,9 +4,13 @@
 - k3s
 
   - [k3s 安装使用](k3s/k3s.md)
+  - [helm 安装](k3s/helm.md)
   
   - deployment
     - [influxdb-部署](k3s/deployment/influxdb-部署.md)
+
+    - bitnami
+      - [zookeeper](k3s/deployment/bitnami/zookeeper.md)
 
 - docker
 
