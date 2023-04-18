@@ -11,6 +11,7 @@
 
     - bitnami
       - [zookeeper](k3s/deployment/bitnami/zookeeper.md)
+      - [kafka](k3s/deployment/bitnami/kafka.md)
 
 - docker
 

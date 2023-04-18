@@ -1,4 +1,4 @@
-# bitnami
+# bitnami-zookeeper
 
 ## helm
 
@@ -9,7 +9,8 @@ helm repo add my-repo https://charts.bitnami.com/bitnami
 helm install my-release my-repo/zookeeper
 ```
 
-## helm生成的zookeeper
+## 自定义
+### 工作负载ymal
 
 ```yaml
 ---
@@ -185,7 +186,7 @@ spec:
       metadata:
         k8s.kuboard.cn/pvcType: Dynamic
         creationTimestamp: null
-        name: zookeeper-data
+        name: data
       spec:
         accessModes:
           - ReadWriteOnce
@@ -285,4 +286,44 @@ spec:
     app.kubernetes.io/name: zookeeper
   sessionAffinity: None
   type: ClusterIP
+
+---
+apiVersion: v1
+data:
+  init-certs.sh: '#!/bin/bash'
+  setup.sh: |-
+    #!/bin/bash
+
+    # Execute entrypoint as usual after obtaining ZOO_SERVER_ID
+    # check ZOO_SERVER_ID in persistent volume via myid
+    # if not present, set based on POD hostname
+    if [[ -f "/bitnami/zookeeper/data/myid" ]]; then
+        export ZOO_SERVER_ID="$(cat /bitnami/zookeeper/data/myid)"
+    else
+        HOSTNAME="$(hostname -s)"
+        if [[ $HOSTNAME =~ (.*)-([0-9]+)$ ]]; then
+            ORD=${BASH_REMATCH[2]}
+            export ZOO_SERVER_ID="$((ORD + 1 ))"
+        else
+            echo "Failed to get index from hostname $HOST"
+            exit 1
+        fi
+    fi
+    exec /entrypoint.sh /run.sh
+kind: ConfigMap
+metadata:
+  annotations:
+    meta.helm.sh/release-name: bitnami-zookeeper
+    meta.helm.sh/release-namespace: default
+  labels:
+    app.kubernetes.io/component: zookeeper
+    app.kubernetes.io/instance: bitnami-zookeeper
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: zookeeper
+    helm.sh/chart: zookeeper-11.1.6
+  name: bitnami-zookeeper-scripts
+  namespace: default
+  resourceVersion: '1172508'
+
+
 ```
