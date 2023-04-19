@@ -13,6 +13,7 @@
   <div id="app"></div>
   <script type="text/javascript" src="./body.js"></script>
   <script>
+
     var num = 0;
     mermaid.initialize({ startOnLoad: false });
 
@@ -42,9 +43,9 @@
       },
 
       copyCode: {
-        buttonText : '点击复制',
-        errorText  : '复制失败',
-        successText: '复制成功'
+        buttonText : 'Copy',
+        errorText  : 'Fail',
+        successText: 'Copied!'
       },
 
       markdown: {
@@ -60,6 +61,20 @@
         }
       },
 
+      plugins: [
+           EditOnGithubPlugin.create(
+              'https://github.com/karleraess/docsify/tree/main/docs/',
+              null,
+              function(file) {
+                if (file.indexOf('en') === -1) {
+                  return 'Edit On Github'
+                } else {
+                  return 'Edit On Github'
+                }
+              }
+            )
+      ]
+
 
 <!--      plantuml: { // plantuml使用默认皮肤-->
 <!--        skin: 'default',-->
@@ -67,8 +82,6 @@
 
     }
   </script>
-<!--  <script src="https://unpkg.com/docsify-copy-code.js"></script>-->
-  <script src="./src/docsify-copy-code.js"></script>
-<!--  <script type="text/javascript" src="./after-body.js"></script>-->
+  <script type="text/javascript" src="./after-body.js"></script>
 </body>
 </html>
