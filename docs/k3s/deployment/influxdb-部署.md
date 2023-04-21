@@ -1,3 +1,6 @@
+# InfluxDB
+
+
 # 一、InfluxDB介绍
 
 InfluxDB是一款用Go语言编写的开源分布式时序、事件和指标数据库。
