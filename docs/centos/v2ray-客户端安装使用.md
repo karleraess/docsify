@@ -122,3 +122,100 @@ function unsetproxy() {
 或是关闭当前终端，重新打开，使得配置立即生效;  
 在终端执行 setproxy 使代理生效  
 在终端执行 unsetproxy 使代理生效  
+
+
+
+# config.json 默认示例
+```json
+{
+    "log":{
+        "loglevel":"warning"
+    },
+    "inbounds":[
+        {
+            "port":1080,
+            "listen":"127.0.0.1",
+            "tag":"socks-inbound",
+            "protocol":"socks",
+            "settings":{
+                "auth":"noauth",
+                "udp":false,
+                "ip":"127.0.0.1"
+            },
+            "sniffing":{
+                "enabled":true,
+                "destOverride":[
+                    "http",
+                    "https",
+                    "tls"
+                ]
+            }
+        }
+    ],
+    "outbounds":[
+        {
+            "protocol":"blackhole",
+            "settings":{
+
+            },
+            "tag":"blocked"
+        }
+    ],
+    "routing":{
+        "domainStrategy":"IPOnDemand",
+        "rules":[
+            {
+                "type":"field",
+                "ip":[
+                    "geoip:private"
+                ],
+                "outboundTag":"blocked"
+            },
+            {
+                "type":"field",
+                "domain":[
+                    "geosite:category-ads"
+                ],
+                "outboundTag":"blocked"
+            }
+        ]
+    },
+    "dns":{
+        "hosts":{
+            "domain:v2ray.com":"www.vicemc.net",
+            "domain:github.io":"pages.github.com",
+            "domain:wikipedia.org":"www.wikimedia.org",
+            "domain:shadowsocks.org":"electronicsrealm.com"
+        },
+        "servers":[
+            "1.1.1.1",
+            {
+                "address":"114.114.114.114",
+                "port":53,
+                "domains":[
+                    "geosite:cn"
+                ]
+            },
+            "8.8.8.8",
+            "localhost"
+        ]
+    },
+    "policy":{
+        "levels":{
+            "0":{
+                "uplinkOnly":0,
+                "downlinkOnly":0
+            }
+        },
+        "system":{
+            "statsInboundUplink":false,
+            "statsInboundDownlink":false,
+            "statsOutboundUplink":false,
+            "statsOutboundDownlink":false
+        }
+    },
+    "other":{
+
+    }
+}
+```
