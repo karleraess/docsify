@@ -15,9 +15,9 @@ https://github.com/v2ray/v2ray-core/releases
 ```
 
 ### config.json
-zi包有默认的config.json，但是没有outbounds 
-可以从windows等环境的v2ray ui工具中的某个节点copy一份outbound的json。 
-对默认的json补充outbound即可，以防万一，文末贴了一份默认的config.json 
+zi包有默认的config.json，但是没有outbounds  
+可以从windows等环境的v2ray ui工具中的某个节点copy一份outbound的json。  
+对默认的json补充outbound即可，以防万一，文末贴了一份默认的config.json  
 
 对编写完整的config.json，使用如下命令测试
 ```shell
@@ -118,7 +118,7 @@ function unsetproxy() {
 }
 ```
 
-执行 source ~/.bashrc ,使得配置立即生效; 
-或是关闭当前终端，重新打开，使得配置立即生效; 
-在终端执行 setproxy 使代理生效 
-在终端执行 unsetproxy 使代理生效 
+执行 source ~/.bashrc ,使得配置立即生效;  
+或是关闭当前终端，重新打开，使得配置立即生效;  
+在终端执行 setproxy 使代理生效  
+在终端执行 unsetproxy 使代理生效  
