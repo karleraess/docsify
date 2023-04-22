@@ -1,6 +1,9 @@
 
 - [首页](README.md)
 
+- centos
+  - [v2ray 客户端](centos/v2ray-客户端安装使用.md)
+
 - k3s
 
   - [k3s 安装使用](k3s/k3s.md)
