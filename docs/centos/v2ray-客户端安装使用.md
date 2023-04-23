@@ -128,94 +128,123 @@ function unsetproxy() {
 # config.json 默认示例
 ```json
 {
-    "log":{
-        "loglevel":"warning"
+  "dns": {
+    "hosts": {
+      "domain:googleapis.cn": "googleapis.com"
     },
-    "inbounds":[
-        {
-            "port":1080,
-            "listen":"127.0.0.1",
-            "tag":"socks-inbound",
-            "protocol":"socks",
-            "settings":{
-                "auth":"noauth",
-                "udp":false,
-                "ip":"127.0.0.1"
-            },
-            "sniffing":{
-                "enabled":true,
-                "destOverride":[
-                    "http",
-                    "https",
-                    "tls"
-                ]
-            }
-        }
-    ],
-    "outbounds":[
-        {
-            "protocol":"blackhole",
-            "settings":{
-
-            },
-            "tag":"blocked"
-        }
-    ],
-    "routing":{
-        "domainStrategy":"IPOnDemand",
-        "rules":[
-            {
-                "type":"field",
-                "ip":[
-                    "geoip:private"
-                ],
-                "outboundTag":"blocked"
-            },
-            {
-                "type":"field",
-                "domain":[
-                    "geosite:category-ads"
-                ],
-                "outboundTag":"blocked"
-            }
-        ]
+    "servers": [
+      "1.1.1.1"
+    ]
+  },
+  "inbounds": [
+    {
+      "listen": "127.0.0.1",
+      "port": 10808,
+      "protocol": "socks",
+      "settings": {
+        "auth": "noauth",
+        "udp": true,
+        "userLevel": 8
+      },
+      "sniffing": {
+        "destOverride": [],
+        "enabled": false
+      },
+      "tag": "socks"
     },
-    "dns":{
-        "hosts":{
-            "domain:v2ray.com":"www.vicemc.net",
-            "domain:github.io":"pages.github.com",
-            "domain:wikipedia.org":"www.wikimedia.org",
-            "domain:shadowsocks.org":"electronicsrealm.com"
-        },
-        "servers":[
-            "1.1.1.1",
-            {
-                "address":"114.114.114.114",
-                "port":53,
-                "domains":[
-                    "geosite:cn"
-                ]
-            },
-            "8.8.8.8",
-            "localhost"
-        ]
-    },
-    "policy":{
-        "levels":{
-            "0":{
-                "uplinkOnly":0,
-                "downlinkOnly":0
-            }
-        },
-        "system":{
-            "statsInboundUplink":false,
-            "statsInboundDownlink":false,
-            "statsOutboundUplink":false,
-            "statsOutboundDownlink":false
-        }
-    },
-    "other":{
-
+    {
+      "listen": "127.0.0.1",
+      "port": 10809,
+      "protocol": "http",
+      "settings": {
+        "userLevel": 8
+      },
+      "tag": "http"
     }
+  ],
+  "log": {
+    "loglevel": "warning"
+  },
+  "outbounds": [
+    {
+      "mux": {
+        "concurrency": 8,
+        "enabled": false
+      },
+      "protocol": "vmess",
+      "settings": {
+        "vnext": [
+          {
+            "address": "补充",
+            "port": 补充,
+            "users": [
+              {
+                "alterId": 0,
+                "encryption": "",
+                "flow": "",
+                "id": "补充",
+                "level": 8,
+                "security": "auto"
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "ws",
+        "security": "",
+        "wsSettings": {
+          "headers": {
+            "Host": "v.qq.com"
+          },
+          "path": "/images"
+        }
+      },
+      "tag": "proxy"
+    },
+    {
+      "protocol": "freedom",
+      "settings": {},
+      "tag": "direct"
+    },
+    {
+      "protocol": "blackhole",
+      "settings": {
+        "response": {
+          "type": "http"
+        }
+      },
+      "tag": "block"
+    }
+  ],
+  "policy": {
+    "levels": {
+      "8": {
+        "connIdle": 300,
+        "downlinkOnly": 1,
+        "handshake": 4,
+        "uplinkOnly": 1
+      }
+    },
+    "system": {
+      "statsOutboundUplink": true,
+      "statsOutboundDownlink": true
+    }
+  },
+  "routing": {
+    "domainMatcher": "mph",
+    "domainStrategy": "IPOnDemand",
+    "rules": [
+      {
+        "ip": [
+          "1.1.1.1"
+        ],
+        "outboundTag": "proxy",
+        "port": "53",
+        "type": "field"
+      }
+    ]
+  },
+  "stats": {}
 }
 ```
