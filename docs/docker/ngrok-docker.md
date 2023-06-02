@@ -17,6 +17,8 @@ sudo docker run -d \
 	# httpAddr的端口要和-p中http的三个端口一致，例如-p 18080:18080 -httpAddr=":18080"，httpsAddr同理
 ```
 
+端口可以用  --net=host  替代一个一个端口映射
+
 ## 客户端启动
 ### 下载客户端
 从/root/ngrok/bin下载对应系统的客户端ngrok
