@@ -6,6 +6,8 @@
 ## master安装
 ```shell
  curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh | INSTALL_K3S_VERSION=v1.25.6+k3s1 INSTALL_K3S_MIRROR=cn  INSTALL_K3S_EXEC="--docker" sh -s - server --docker --service-node-port-range=1-33000
+ # 或者
+ curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=v1.25.6+k3s1 INSTALL_K3S_MIRROR=cn  INSTALL_K3S_EXEC="--docker" sh -s - server --docker --service-node-port-range=1-33000
 ```
 备用
 ```shell
