@@ -38,16 +38,18 @@ tunnels:
 ```shell
 ./ngrok -config ngrok.cfg start-all
 
-# 后台运行
-nohup ./ngrok -config ngrok.cfg start-all >./nohup.out 2>&1&
+# 后台运行（后台运行命令如果有问题，将命令写入sh文件，通过执行sh文件来运行）
+nohup ./ngrok -config ngrok.cfg start-all >./nohup.out 2>&1 &
+
 ```
 ### centos 7.9.2009 开机自动启动
 1.vi /etc/rc.d/rc.local
+如果 /etc/rc.d/rc.local 文件没有写权限，先执行 chmod 777 /etc/rc.d/rc.local
 
 2.末尾添加命令
 ```shell
-# 后台运行
-nohup 绝对路径/ngrok -config 绝对路径/ngrok.cfg start-all >绝对路径/nohup.out 2>&1&
+# 后台运行（后台运行命令如果有问题，将命令写入sh文件，通过执行sh文件来运行）
+nohup 绝对路径/ngrok -config 绝对路径/ngrok.cfg start-all >绝对路径/nohup.out 2>&1 &
 ```
 
 
