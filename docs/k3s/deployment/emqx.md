@@ -1,6 +1,13 @@
 ## emqx
 [emqx 文档](https://www.emqx.io/docs/zh/v5.0/)
 
+### 端口说明
+tcp：1883  
+ssl：8883  
+ws：8083  
+wss：8084  
+管理平台：18083  
+
 ### emqx 单节点安装
 
 ```shell
