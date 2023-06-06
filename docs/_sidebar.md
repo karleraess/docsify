@@ -11,7 +11,8 @@
   
   - deployment
     - [influxdb-部署](k3s/deployment/influxdb-部署.md)
-
+    - [emqx-部署](k3s/deployment/emqx.md)
+    
     - bitnami
       - [zookeeper](k3s/deployment/bitnami/zookeeper.md)
       - [kafka](k3s/deployment/bitnami/kafka.md)
