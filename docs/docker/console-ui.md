@@ -1,5 +1,8 @@
 # 各种控制台UI工具
 
+## grafana
+都支持，可以插件安装各个中间件的ui管理，牛
+
 ## kafka-ui，仅限kafka
 ```shell
 docker run -it -p 8080:8080 -e DYNAMIC_CONFIG_ENABLED=true provectuslabs/kafka-ui 
