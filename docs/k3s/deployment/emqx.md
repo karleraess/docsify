@@ -208,8 +208,6 @@ spec:
       securityContext: {}
       terminationGracePeriodSeconds: 30
       volumes:
-        - emptyDir: {}
-          name: emqx-core-data
         - configMap:
             defaultMode: 420
             name: emqx-bootstrap-config
@@ -218,6 +216,22 @@ spec:
     rollingUpdate:
       partition: 0
     type: RollingUpdate
+  volumeClaimTemplates:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        creationTimestamp: null
+        name: emqx-core-data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
+        storageClassName: nfs-data
+        volumeMode: Filesystem
+      status:
+        phase: Pending
 
 ---
 apiVersion: v1
