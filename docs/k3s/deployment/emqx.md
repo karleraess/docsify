@@ -69,9 +69,184 @@ networks:
     driver: bridge
 ```
 
-#### 查看集群状态
+### k8s 部署
+#### 字典
 ```shell
-$ docker exec -it emqx1 sh -c "emqx_ctl cluster status"
+---
+apiVersion: v1
+data:
+  emqx.conf: >-
+    {node:{data_dir:data, etc_dir:etc}, cluster:{discovery_strategy:dns,
+    dns:{record_type:srv, name:"emqx-headless.default.svc.cluster.local"}},
+    dashboard:{listeners:{http:{bind:18083}}, default_username:admin,
+    default_password:public}, listeners:{tcp:{default:{bind:"0.0.0.0:1883",
+    max_connections:1024000}}}}
+kind: ConfigMap
+metadata:
+  labels:
+    apps.emqx.io/instance: emqx
+  name: emqx-bootstrap-config
+  namespace: default
+```
+
+#### 密文
+```shell
+---
+apiVersion: v1
+data:
+  node_cookie: >-
+    NWxqYnJubGFiZGp2b2JlcWgxMjZ4bWFzZjRqY3B2Z204YnBwcnltYWw3c2U5cWRnbnpxYzF6dG1wajB2a2dseA==
+kind: Secret
+metadata:
+  labels:
+    apps.emqx.io/instance: emqx
+  name: emqx-node-cookie
+  namespace: default
+type: Opaque
+```
+
+#### 工作负载和服务
+```shell
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    apps.emqx.io/db-role: core
+    apps.emqx.io/instance: emqx
+    apps.emqx.io/managed-by: emqx-operator
+  name: emqx-core
+  namespace: default
+spec:
+  podManagementPolicy: Parallel
+  replicas: 0
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      apps.emqx.io/db-role: core
+      apps.emqx.io/instance: emqx
+      apps.emqx.io/managed-by: emqx-operator
+  serviceName: emqx-headless
+  template:
+    metadata:
+      annotations:
+        apps.emqx.io/headless-service-name: emqx-headless
+        apps.emqx.io/manage-containers: emqx
+      creationTimestamp: null
+      labels:
+        apps.emqx.io/db-role: core
+        apps.emqx.io/instance: emqx
+        apps.emqx.io/managed-by: emqx-operator
+    spec:
+      containers:
+        - env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.namespace
+            - name: STS_HEADLESS_SERVICE_NAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: 'metadata.annotations[''apps.emqx.io/headless-service-name'']'
+            - name: EMQX_HOST
+              value: >-
+                $(POD_NAME).$(STS_HEADLESS_SERVICE_NAME).$(POD_NAMESPACE).svc.cluster.local
+            - name: EMQX_NODE__DB_ROLE
+              value: core
+            - name: EMQX_NODE__COOKIE
+              valueFrom:
+                secretKeyRef:
+                  key: node_cookie
+                  name: emqx-node-cookie
+          image: 'emqx:5.0'
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /status
+              port: 18083
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: emqx
+          readinessProbe:
+            failureThreshold: 12
+            httpGet:
+              path: /status
+              port: 18083
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /opt/emqx/data
+              name: emqx-core-data
+            - mountPath: /opt/emqx/etc/emqx.conf
+              name: bootstrap-config
+              readOnly: true
+              subPath: emqx.conf
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - emptyDir: {}
+          name: emqx-core-data
+        - configMap:
+            defaultMode: 420
+            name: emqx-bootstrap-config
+          name: bootstrap-config
+  updateStrategy:
+    rollingUpdate:
+      partition: 0
+    type: RollingUpdate
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: emqx-headless
+  namespace: default
+spec:
+  clusterIP: None
+  clusterIPs:
+    - None
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+    - name: ekka
+      port: 4370
+      protocol: TCP
+      targetPort: 4370
+  publishNotReadyAddresses: true
+  selector:
+    apps.emqx.io/db-role: core
+    apps.emqx.io/instance: emqx
+  sessionAffinity: None
+  type: ClusterIP
+```
+
+
+### 查看集群状态
+```shell
+$ emqx_ctl cluster status
+正常结果
 Cluster status: #{running_nodes => ['emqx@node1.emqx.com','emqx@node2.emqx.com'],
 stopped_nodes => []}
 ```
