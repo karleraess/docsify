@@ -1,4 +1,4 @@
-## emqx
+# emqx
 [emqx 文档](https://www.emqx.io/docs/zh/v5.0/)
 
 ### 端口说明
