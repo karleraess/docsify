@@ -70,7 +70,7 @@ networks:
 ```
 
 ### k8s 部署
-#### 字典
+
 ```shell
 ---
 apiVersion: v1
@@ -87,10 +87,9 @@ metadata:
     apps.emqx.io/instance: emqx
   name: emqx-bootstrap-config
   namespace: default
-```
 
-#### 密文
-```shell
+
+
 ---
 apiVersion: v1
 data:
@@ -103,10 +102,11 @@ metadata:
   name: emqx-node-cookie
   namespace: default
 type: Opaque
-```
 
-#### 工作负载和服务
-```shell
+
+
+
+
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -240,6 +240,52 @@ spec:
     apps.emqx.io/instance: emqx
   sessionAffinity: None
   type: ClusterIP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations: {}
+  labels:
+    apps.emqx.io/db-role: core
+    apps.emqx.io/instance: emqx
+    k8s.kuboard.cn/name: emqx-core
+  name: emqx-core
+  namespace: default
+spec:
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+    - name: tcp
+      port: 1883
+      protocol: TCP
+      targetPort: 1883
+    - name: ssl
+      port: 8883
+      protocol: TCP
+      targetPort: 8883
+    - name: ws
+      port: 8083
+      protocol: TCP
+      targetPort: 8083
+    - name: wss
+      port: 8084
+      protocol: TCP
+      targetPort: 8084
+    - name: http
+      port: 18083
+      protocol: TCP
+      targetPort: 18083
+  selector:
+    apps.emqx.io/db-role: core
+    apps.emqx.io/instance: emqx
+    apps.emqx.io/managed-by: emqx-operator
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}
 ```
 
 
